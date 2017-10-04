@@ -1,0 +1,35 @@
+{
+  "bugs": {
+    "url": "https://github.com/Zysen/node-windriver/issues"
+  },
+  "dependencies": {},
+  "description": "Node Wrapper for windows driver functions",
+  "gypfile": true,
+  "homepage": "https://github.com/Zysen/node-windriver#readme",
+  "keywords": [
+    "windows driver",
+    "driver load",
+    "driver unload",
+    "ioctl"
+  ],
+  "license": "MIT",
+  "main": "windriver.js",
+  "maintainers": [
+    {
+      "name": "zysen",
+      "email": "zysennz@gmail.com"
+    }
+  ],
+  "name": "windriver",
+  "optionalDependencies": {},
+  "os": [
+    "win32"
+  ],
+  "private": false,
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Zysen/node-windriver.git"
+  },
+  "version": "0.0.1"
+}
