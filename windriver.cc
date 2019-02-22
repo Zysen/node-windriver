@@ -26,14 +26,30 @@ WinDriver::~WinDriver() {
 }
 static void freeCharArray (char * bu, void *hint) {
 	delete [] bu;
-	
 }
+void getBufferPointer(const FunctionCallbackInfo<Value>& args) 
+{
+    Isolate* isolate = Isolate::GetCurrent();
+    HandleScope scope(isolate);
+	if (args.Length() < 1) {
+		isolate->ThrowException(Exception::TypeError(String::NewFromUtf8(isolate, "Wrong number of arguments.")));
+		return;
+	}
+	char* jInputBuf = Buffer::Data(args[0]);
+	char* OutputBuffer = new char[8];
+	memset(OutputBuffer, 0, 8);
+	memcpy(OutputBuffer, &jInputBuf, sizeof(jInputBuf));
+	
+	args.GetReturnValue().Set(Buffer::New(isolate, OutputBuffer, 8, freeCharArray, NULL).ToLocalChecked());
+}
+
 void WinDriver::Init(Local<Object> exports) {
 	Isolate* isolate = Isolate::GetCurrent();
 	Local<FunctionTemplate> tpl = FunctionTemplate::New(isolate, New);
 	tpl->SetClassName(String::NewFromUtf8(isolate, "Driver"));
 	tpl->InstanceTemplate()->SetInternalFieldCount(1);
  
+	NODE_SET_METHOD(exports, "getBufferPointer", getBufferPointer);
 	// Prototype
 	NODE_SET_PROTOTYPE_METHOD(tpl, "load", Load);
 	NODE_SET_PROTOTYPE_METHOD(tpl, "open", Open);
@@ -46,7 +62,7 @@ void WinDriver::Init(Local<Object> exports) {
 
 void WinDriver::New(const FunctionCallbackInfo<Value>& args) {
 	Isolate* isolate = Isolate::GetCurrent();
-	if (args.Length() < 3) {
+	if (args.Length() < 2) {
 		isolate->ThrowException(Exception::TypeError(String::NewFromUtf8(isolate, "Wrong number of arguments.")));
 		return;
 	}
